@@ -70,7 +70,7 @@ function playGame() {
 
 function startTimer() {
     // Sets timer
-    timer = setInterval(function() {
+    timer = setInterval(function () {
         timerCount--;
         timerElement.textContent = timerCount;
         if (timerCount >= 0) {
@@ -78,7 +78,7 @@ function startTimer() {
             if (gameOver && timerCount > 0) {
                 // Clears interval and stops timer
                 clearInterval(timer);
-                // winGame();
+
             }
         }
         // Tests if time has run out
@@ -113,6 +113,9 @@ function showAnswers(currentQuestion) {
 
 // Checking answers 
 function checkAnswer(answer, correctAnswer) {
+    var correctText = 0;
+    var incorrectText = 0;
+
     if (answer === correctAnswer) {
         currentQuestionIndex++;
         resetQuesiton();
