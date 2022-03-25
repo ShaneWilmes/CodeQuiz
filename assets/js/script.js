@@ -55,7 +55,7 @@ function endGame() {
 
 function playGame() {
     if (currentQuestionIndex <= questions.length && gameOver != true) {
-        var currentQuestion = quesions[currentQuestionIndex];
+        var currentQuestion = questions[currentQuestionIndex];
         setQuestion(currentQuestion.question);
         showAnswers(currentQuestion);
 
