@@ -1,4 +1,4 @@
-var quizGame = document.querySelector(".quiz-game");
+// var quizGame = document.querySelector(".quiz-game");  // Not needed, questionContainer instead
 var correct = document.querySelector(".correct");
 var incorrect = document.querySelector(".incorrect");
 var timerElement = document.querySelector(".timer-count");
@@ -6,14 +6,15 @@ var startButton = document.querySelector(".start-button");
 var startTitle = document.querySelector(".start-title");
 var questionText = document.querySelector(".question-text")
 var questionContainer = document.querySelector(".question-container")
+var resetButton = document.querySelector(".reset-button")
 
 var timer;
 var timerCount;  // Timer is also the scorekeeper
 var currentQuestionIndex = 0;  // Which question are we on?
 var gameOver = false;
 var buttons = [];  // Holds references to our buttons on screen
-var correct = 0;
-var incorrect = 0;
+var right = 0;
+var wrong = 0;
 
 // Array used store questions and answers
 var questions = [
@@ -38,22 +39,16 @@ var questions = [
 ];
 
 function startGame() {
-    gameOver = false;
+    // gameOver = false;
     startButton.disabled = true;
-    timerCount = 60;
+    timerCount = 20;
     currentQuestionIndex = 0;
 
-    playGame();
+    showNextQueston();
     startTimer();
 }
 
-function endGame() {
-    quizGame.textContent = "GAME OVER";
-    startButton.disabled = false;
-    playGame();
-}
-
-function playGame() {
+function showNextQueston() {
     if (currentQuestionIndex <= questions.length && gameOver != true) {
         var currentQuestion = questions[currentQuestionIndex];
         setQuestion(currentQuestion.question);
@@ -66,22 +61,12 @@ function playGame() {
     }
 
 }
-// I don't think 2 if statements are needed
 
 function startTimer() {
     // Sets timer
     timer = setInterval(function () {
         timerCount--;
         timerElement.textContent = timerCount;
-        if (timerCount >= 0) {
-            // Tests if win condition is met
-            if (gameOver && timerCount > 0) {
-                // Clears interval and stops timer
-                clearInterval(timer);
-
-            }
-        }
-        // Tests if time has run out
 
         if (timerCount === 0) {
             // Clears interval
@@ -113,18 +98,18 @@ function showAnswers(currentQuestion) {
 
 // Checking answers 
 function checkAnswer(answer, correctAnswer) {
-    var correctText = 0;
-    var incorrectText = 0;
+    var correctText;
+    var incorrectText;
 
     if (answer === correctAnswer) {
         currentQuestionIndex++;
         resetQuesiton();
-        playGame();
-        correct++
-        correctText.textContent = correct;
+        showNextQueston();
+        right++
+        correctText.textContent = right;
     } else {
-        incorrect++
-        incorrectText.textContent = incorrect;
+        wrong++
+        incorrectText.textContent = wrong;
     }
 }
 
@@ -138,11 +123,18 @@ function resetQuesiton() {
 }
 
 startButton.addEventListener("click", startGame);
+resetButton.addEventListener("click", resetGame);
 
-var resetButton = document.querySelector(".reset-button")
 
 function resetGame() {
 
     correct = 0;
     incorrect = 0;
+}
+
+
+function endGame() {
+    questionContainer.textContent = "GAME OVER";
+    startButton.disabled = true;
+    
 }
