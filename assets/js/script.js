@@ -9,12 +9,17 @@ var questionContainer = document.querySelector(".question-container")
 var resetButton = document.querySelector(".reset-button")
 
 var timer;
-var timerCount;  // Timer is also the scorekeeper
-var currentQuestionIndex = 0;  // Which question are we on?
+var timerCount   // Timer is the scorekeeper
+var currentQuestionIndex;  // Id's which question the quiz is on
 var gameOver = false;
 var buttons = [];  // Holds references to our buttons on screen
-var right;
-var wrong;
+var scoreList = [];
+
+if (JSON.parse(localStorage.getItem("High Scores"))) {
+    scoreList = JSON.parse(localStorage.getItem("High Scores"));
+}
+// var right;
+// var wrong;
 
 // Array used store questions and answers
 var questions = [
@@ -36,6 +41,18 @@ var questions = [
         correctAnswer: "var"
     },
 
+    {
+        question: "Inside which HTML element do we put the JavaScript?",
+        answers: ["div", "main", "script"],
+        correctAnswer: "script"
+    },
+
+    {
+        question: "What is the correct syntax for referring to an external script called xxx.js?",
+        answers: ["script name=", "script src=", "script href="],
+        correctAnswer: "script src="
+    },
+
 ];
 
 function startGame() {
@@ -49,6 +66,9 @@ function startGame() {
 }
 
 function showNextQuestion() {
+
+    endGame();
+
     if (currentQuestionIndex < questions.length && gameOver != true) {
         var currentQuestion = questions[currentQuestionIndex];
         setQuestion(currentQuestion.question);
@@ -106,14 +126,15 @@ function checkAnswer(answer, correctAnswer) {
         currentQuestionIndex++;
         resetQuestion();
         showNextQuestion();
-        right++
+        // right++
         // correctText.textContent = right;
-    } else {
-        wrong++
-        // showNextQuestion();
-        // incorrectText.textContent = wrong;
     }
+
+    // wrong++
+    // showNextQuestion();
+    // incorrectText.textContent = wrong;
 }
+
 
 function resetQuestion() {
     for (let i = 0; i < buttons.length; i++) {
@@ -125,18 +146,39 @@ function resetQuestion() {
 }
 
 startButton.addEventListener("click", startGame);
+
 resetButton.addEventListener("click", resetGame);
 
 
 function resetGame() {
 
-    correct = 0;
-    incorrect = 0;
-}
+    if (timerCount > 0) {
+        clearInterval(timer);
+        resetQuestion();
+        startGame();
+    }
 
+};
 
 function endGame() {
-    questionContainer.textContent = "GAME OVER";
-    startButton.disabled = true;
-    
-}
+
+
+    if (timerCount === 0 || questions.length === currentQuestionIndex) {
+
+        alert("Your score is " + timerCount);
+
+        var score = prompt("Enter your initials")
+
+
+        questionContainer.textContent = "GAME OVER";
+
+        var data = {
+            initials: score,
+            score: timerCount
+        }
+        scoreList.push(data);
+        localStorage.setItem("High Scores", JSON.stringify(scoreList));
+
+    }
+
+};
