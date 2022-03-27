@@ -13,8 +13,8 @@ var timerCount;  // Timer is also the scorekeeper
 var currentQuestionIndex = 0;  // Which question are we on?
 var gameOver = false;
 var buttons = [];  // Holds references to our buttons on screen
-var right = 0;
-var wrong = 0;
+var right;
+var wrong;
 
 // Array used store questions and answers
 var questions = [
@@ -41,23 +41,23 @@ var questions = [
 function startGame() {
     // gameOver = false;
     startButton.disabled = true;
-    timerCount = 20;
+    timerCount = 600;
     currentQuestionIndex = 0;
 
-    showNextQueston();
+    showNextQuestion();
     startTimer();
 }
 
-function showNextQueston() {
-    if (currentQuestionIndex <= questions.length && gameOver != true) {
+function showNextQuestion() {
+    if (currentQuestionIndex < questions.length && gameOver != true) {
         var currentQuestion = questions[currentQuestionIndex];
         setQuestion(currentQuestion.question);
         showAnswers(currentQuestion);
 
     } else {
-        resetQuesiton();
+        resetQuestion();
         // get timer value for leaderboard
-        gameOver = true;
+        // gameOver = true;
     }
 
 }
@@ -83,11 +83,11 @@ function setQuestion(currentQuestion) {
 function showAnswers(currentQuestion) {
 
     for (let i = 0; i < currentQuestion.answers.length; i++) {
-        var answer = currentQuestion.answers[i];
+        let answer = currentQuestion.answers[i];
         let button = document.createElement("button");
         button.innerHTML = answer;
         button.name = "questionButton";
-        button.addEventListener("click", function () {
+        button.addEventListener("click", function (event) {
             console.log(answer + " " + currentQuestion.correctAnswer)
             checkAnswer(answer, currentQuestion.correctAnswer);
         });
@@ -96,24 +96,26 @@ function showAnswers(currentQuestion) {
     }
 }
 
+
 // Checking answers 
 function checkAnswer(answer, correctAnswer) {
-    var correctText;
-    var incorrectText;
+    // var correctText = right;
+    // var incorrectText = wrong;
 
     if (answer === correctAnswer) {
         currentQuestionIndex++;
-        resetQuesiton();
-        showNextQueston();
+        resetQuestion();
+        showNextQuestion();
         right++
-        correctText.textContent = right;
+        // correctText.textContent = right;
     } else {
         wrong++
-        incorrectText.textContent = wrong;
+        // showNextQuestion();
+        // incorrectText.textContent = wrong;
     }
 }
 
-function resetQuesiton() {
+function resetQuestion() {
     for (let i = 0; i < buttons.length; i++) {
         questionContainer.removeChild(buttons[i]);
     }
