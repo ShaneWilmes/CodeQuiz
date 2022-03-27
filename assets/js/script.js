@@ -13,13 +13,9 @@ var timerCount   // Timer is the scorekeeper
 var currentQuestionIndex;  // Id's which question the quiz is on
 var gameOver = false;
 var buttons = [];  // Holds references to our buttons on screen
-var scoreList = [];
+var scoreList = [];  //Holds references to the scores
 
-if (JSON.parse(localStorage.getItem("High Scores"))) {
-    scoreList = JSON.parse(localStorage.getItem("High Scores"));
-}
-// var right;
-// var wrong;
+
 
 // Array used store questions and answers
 var questions = [
@@ -55,19 +51,18 @@ var questions = [
 
 ];
 
+// Starts the quiz and set timer countdown value
 function startGame() {
-    // gameOver = false;
-    startButton.disabled = true;
+    startButton.disabled = true;  // Prevents start button from re-setting the game
     timerCount = 600;
-    currentQuestionIndex = 0;
-
+    currentQuestionIndex = 0;  // Allows all ?'s to be asked
     showNextQuestion();
     startTimer();
-}
+};
 
 function showNextQuestion() {
 
-    endGame();
+    
 
     if (currentQuestionIndex < questions.length && gameOver != true) {
         var currentQuestion = questions[currentQuestionIndex];
@@ -76,14 +71,15 @@ function showNextQuestion() {
 
     } else {
         resetQuestion();
-        // get timer value for leaderboard
-        // gameOver = true;
     }
 
-}
+    endGame();  // Triggers prompts for score and initials
 
+};
+
+// Sets timer and clears it upon reaching 0
 function startTimer() {
-    // Sets timer
+    
     timer = setInterval(function () {
         timerCount--;
         timerElement.textContent = timerCount;
@@ -94,12 +90,13 @@ function startTimer() {
             endGame();
         }
     }, 1000);
-}
+};
 
 function setQuestion(currentQuestion) {
     questionText.textContent = currentQuestion
-}
+};
 
+// Presents each question 
 function showAnswers(currentQuestion) {
 
     for (let i = 0; i < currentQuestion.answers.length; i++) {
@@ -114,28 +111,22 @@ function showAnswers(currentQuestion) {
         buttons.push(button)
         questionContainer.appendChild(button);
     }
-}
+};
 
 
-// Checking answers 
+// Checking answers with validation
 function checkAnswer(answer, correctAnswer) {
-    // var correctText = right;
-    // var incorrectText = wrong;
-
+    
     if (answer === correctAnswer) {
         currentQuestionIndex++;
         resetQuestion();
         showNextQuestion();
-        // right++
-        // correctText.textContent = right;
+        
     }
+};
+    
 
-    // wrong++
-    // showNextQuestion();
-    // incorrectText.textContent = wrong;
-}
-
-
+// Takes the quiz back to first question if game ends or is reset
 function resetQuestion() {
     for (let i = 0; i < buttons.length; i++) {
         questionContainer.removeChild(buttons[i]);
@@ -143,23 +134,21 @@ function resetQuestion() {
 
     setQuestion("");
     buttons = [];
-}
+};
 
-startButton.addEventListener("click", startGame);
-
-resetButton.addEventListener("click", resetGame);
-
-
+// Allows user to reset game and timer/score.  
 function resetGame() {
 
     if (timerCount > 0) {
         clearInterval(timer);
         resetQuestion();
         startGame();
+        window.location.reload();
     }
 
 };
 
+// Alerts user of score and asks to submit initials.  Takes input and stores it to High Scores page
 function endGame() {
 
 
@@ -178,7 +167,15 @@ function endGame() {
         }
         scoreList.push(data);
         localStorage.setItem("High Scores", JSON.stringify(scoreList));
-
+        clearInterval(timer);
     }
 
 };
+
+if (JSON.parse(localStorage.getItem("High Scores"))) {
+    scoreList = JSON.parse(localStorage.getItem("High Scores"));  // Creates string from score input and stores it 
+};
+
+startButton.addEventListener("click", startGame);  // Adds functionality to start but and starts the game
+
+resetButton.addEventListener("click", resetGame); // Adds functionality to reset button and re-starts the game

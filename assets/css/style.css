@@ -12,7 +12,8 @@ header {
 }
 
 .quiz-title {
-  font-size: 3.0em
+  font-size: 5.0em;
+  color: black;
 }
 
 .start-button {
@@ -33,13 +34,19 @@ header {
 }
 
 .timer-text {
-  color: red;
-  font-size: 25px;
-  font-family: monospace;
+  
+  font-size: 2.5em;
+  font-family: monospace;  
 }
 
 h3 {
   color: black;
+}
+
+a {
+  text-align: left;
+  padding: 10px;
+  font-size: x-large;
 }
 
 body {

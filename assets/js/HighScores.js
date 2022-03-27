@@ -1,3 +1,5 @@
+// Sets working function of high scores page 
+
 var highScores = document.querySelector(".high-scores");
 var scoreList = [];
 
