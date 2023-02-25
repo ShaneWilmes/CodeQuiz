@@ -54,7 +54,7 @@ var questions = [
 // Starts the quiz and set timer countdown value
 function startGame() {
     startButton.disabled = true;  // Prevents start button from re-setting the game
-    timerCount = 15;
+    timerCount = 30;
     currentQuestionIndex = 0;  // Allows all ?'s to be asked
     showNextQuestion();
     startTimer();
