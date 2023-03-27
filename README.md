@@ -1,5 +1,4 @@
-# CodeQuizHW-4
-# Homework 4
+# CodeQuiz
 # Used JavaScript to create a Code Quiz game with multiple choice questions
 # User is prompted and timed.  Local storage saves high scores 
 ![screen shot of code quiz page](/assets/images/CodeQuizSreenShot.png)
